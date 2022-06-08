@@ -1,5 +1,18 @@
 # mpf
 Linux kernel module to monitor process flag
+## prerequisites
+
+In general you need to install at least following packages (exact list depends on the specific GNU/Linux distribution used):
+
+- kernel-headers
+- kernel-devel
+- gcc
+
+On CentOS 7.9 I also had to run:
+```
+sudo ln -s /usr/src/kernels/3.10.0-1160.66.1.el7.x86_64/ /usr/src/kernels/3.10.0-1160.el7.x86_64
+
+```
 
 ## to compile
 ```
