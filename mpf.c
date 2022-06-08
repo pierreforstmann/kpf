@@ -28,7 +28,9 @@ MODULE_PARM_DESC(pf_parameter, "process flag parameter");
 #define MAX_PF_NR	50
 
 static uint64_t fa[MAX_PF_NR] = {
+#ifdef	PF_IDLE
 	PF_IDLE,
+#endif
 	PF_EXITING,
 	PF_VCPU,
 	PF_WQ_WORKER,
@@ -46,7 +48,9 @@ static uint64_t fa[MAX_PF_NR] = {
 	PF_NOFREEZE,
 	PF_FROZEN,
 	PF_KSWAPD,
+#ifdef	PF_MALLOC_NOFS
 	PF_MEMALLOC_NOFS,
+#endif
 	PF_MEMALLOC_NOIO,
 #ifdef PF_LESS_THROTTLE 
 	PF_LESS_THROTTLE,
@@ -65,7 +69,9 @@ static uint64_t fa[MAX_PF_NR] = {
 #endif
 	PF_NO_SETAFFINITY,
 	PF_MCE_EARLY,
+#ifdef	PF_MEMALLOC_NOCMA
 	PF_MEMALLOC_NOCMA,
+#endif
 #ifdef	PF_IO_WORKER
 	PF_IO_WORKER,
 #endif
@@ -79,7 +85,9 @@ static uint64_t fa[MAX_PF_NR] = {
 
 static char *fda[MAX_PF_NR] =
 {
+#ifdef	PF_IDLE_
 	"PF_IDLE",
+#endif	
 	"PF_EXITING",
 	"PF_VCPU",
 	"PF_WQ_WORKER",
@@ -97,7 +105,9 @@ static char *fda[MAX_PF_NR] =
 	"PF_NOFREEZE",
 	"PF_FROZEN",
 	"PF_KSWAPD",
+#ifdef	PF_MEMALLOC_NOFS
 	"PF_MEMALLOC_NOFS",
+#endif
 	"PF_MEMALLOC_NOIO",
 #ifdef	PF_LESS_THROTTLE
 	"PF_LESS_THROTTLE",
@@ -116,7 +126,9 @@ static char *fda[MAX_PF_NR] =
 #endif
 	"PF_NO_SETAFFINITY",
 	"PF_MCE_EARLY",
+#ifdef PF_MEMALLOC_NOCMA
 	"PF_MEMALLOC_NOCMA",
+#endif
 #ifdef	PF_IO_WORKER
 	"PF_IO_WORKER",
 #endif
