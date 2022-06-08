@@ -77,4 +77,4 @@ Monitoring process flags
 sudo rmmod mpf.ko 
 ```
 ## compatibility
-Currently this module compatible with Linux kernel 3.10, 4.18 and 5.4.
+Currently this module is compatible with Linux kernel 3.10, 4.18 and 5.4.
