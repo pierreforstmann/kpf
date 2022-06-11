@@ -3,8 +3,6 @@
  *
  * monitor process flag
  *
- * for kernel 5.4
- *
  * Copyright Pierre Forstmann 2022
  */
 #include <linux/init.h>      
@@ -13,6 +11,7 @@
 #include <linux/list.h>
 #include <linux/sched/signal.h>
 #include <linux/seq_file.h>
+#include <linux/version.h>
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Pierre Forstmann");
@@ -69,6 +68,9 @@ static uint64_t fa[MAX_PF_NR] = {
 #endif
 	PF_NO_SETAFFINITY,
 	PF_MCE_EARLY,
+#ifdef	PF_MEMALLOC_PIN
+	PF_MEMALLOC_PIN,
+#endif
 #ifdef	PF_MEMALLOC_NOCMA
 	PF_MEMALLOC_NOCMA,
 #endif
@@ -126,6 +128,9 @@ static char *fda[MAX_PF_NR] =
 #endif
 	"PF_NO_SETAFFINITY",
 	"PF_MCE_EARLY",
+#ifdef PF_MEMALLOC_PIN
+	"PF_MEMALLOC_PIN",
+#endif
 #ifdef PF_MEMALLOC_NOCMA
 	"PF_MEMALLOC_NOCMA",
 #endif
@@ -158,13 +163,22 @@ static int mpf_open(struct inode *inode, struct  file *file)
   return single_open(file, mpf_proc_show, NULL);
 }
 
-static struct file_operations ops = {
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5,15,0)
+static struct file_operations f_ops = {
   .owner = THIS_MODULE,
   .open = mpf_open,
   .read = seq_read,
   .llseek = seq_lseek,
   .release = single_release,
 };
+#else
+static struct proc_ops  p_ops = {
+  .proc_open = mpf_open,
+  .proc_read = seq_read,
+  .proc_lseek = seq_lseek,
+  .proc_release = single_release,
+};
+#endif
 
 
 static int check_process_flag(uint64_t u, uint8_t pf_index)
@@ -247,8 +261,11 @@ static int module_init_proc(void)
    else	printk(KERN_INFO "process flag parameter %s found \n", pf_parameter);
    
    pf_index = index;
-
-  new_proc = proc_create(pf_parameter, 0644, 0, &ops);
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5,15,0)
+  new_proc = proc_create(pf_parameter, 0644, 0, &f_ops);
+#else
+  new_proc = proc_create(pf_parameter, 0644, 0, &p_ops);
+#endif
   if (new_proc == NULL)
   {
 	  printk(KERN_INFO "proc_create failed");
