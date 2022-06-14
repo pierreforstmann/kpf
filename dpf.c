@@ -179,18 +179,19 @@ static int check_process_flag(uint64_t u)
 	if (sum == u)
 	{
 		found = 1;
-		printk(KERN_INFO "%llu = ", u);
+		printk(KERN_CONT "%llu = ", u);
 		for (i = 0; i < fa_count; i++)
 		{
 			if (match[i] == 1)
 			{
-				printk(KERN_INFO " %llu (%s)", fa[i], fda[i]);
+				printk(KERN_CONT " %llu (%s)", fa[i], fda[i]);
 				if (i != last_match_index)
-					printk(KERN_INFO " + ");
+					printk(KERN_CONT " + ");
 			}
 		}
 		printk(KERN_INFO "\n");
 	}
+	else 	printk(KERN_INFO "%llu is not a valid process flag \n", u);
 
 	return found;
 }
