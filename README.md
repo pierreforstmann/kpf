@@ -121,7 +121,7 @@ Processes with PF_KTHREAD flag set are written to `/proc/PF_KTHREAD`:
 10332 kworker/u2:0 
 ```
 ## to stop
-
+```
 sudo rmmod mpf.ko 
 ```
 ## compatibility
