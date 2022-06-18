@@ -34,61 +34,94 @@ sudo dmesg | tail -n 5
 sudo rmmod dpf.ko
 ```
 
-To monitor current process flags you can use any valid symbolic process flag as parameter:
+To monitor a specific process flag in `/proc` you can use any valid symbolic process flag as parameter:
 ```
-sudo insmod mpf.ko pf_parameter=PF_RANDOMIZE
+sudo insmod mpf.ko pf_parameter=PF_KTHREAD
 ```
-Processes with PF_RANDOMIZE flag set are written to /proc/PF_RANDOMIZE:
+Processes with PF_KTHREAD flag set are written to `/proc/PF_KTHREAD`:
 
+```Monitoring process flags
+2 kthreadd 
+3 rcu_gp 
+4 rcu_par_gp 
+5 netns 
+7 kworker/0:0H 
+8 kworker/0:1 
+10 mm_percpu_wq 
+11 rcu_tasks_rude_ 
+12 rcu_tasks_trace 
+13 ksoftirqd/0 
+14 rcu_sched 
+15 migration/0 
+16 idle_inject/0 
+17 cpuhp/0 
+18 kdevtmpfs 
+19 inet_frag_wq 
+20 kauditd 
+21 khungtaskd 
+22 oom_reaper 
+23 writeback 
+24 kcompactd0 
+25 ksmd 
+26 khugepaged 
+72 kintegrityd 
+73 kblockd 
+74 blkcg_punt_bio 
+75 tpm_dev_wq 
+76 ata_sff 
+77 md 
+78 edac-poller 
+79 devfreq_wq 
+80 watchdogd 
+82 kworker/0:1H 
+84 kswapd0 
+85 ecryptfs-kthrea 
+87 kthrotld 
+88 irq/24-aerdrv 
+89 irq/25-aerdrv 
+90 irq/26-aerdrv 
+91 irq/27-aerdrv 
+92 irq/28-aerdrv 
+93 irq/29-aerdrv 
+94 irq/30-aerdrv 
+95 acpi_thermal_pm 
+97 vfio-irqfd-clea 
+98 mld 
+99 ipv6_addrconf 
+109 kstrp 
+112 zswap-shrink 
+113 kworker/u3:0 
+118 charger_manager 
+163 cryptd 
+177 scsi_eh_0 
+180 scsi_tmf_0 
+182 scsi_eh_1 
+184 scsi_tmf_1 
+185 scsi_eh_2 
+187 scsi_tmf_2 
+190 scsi_eh_3 
+192 scsi_tmf_3 
+194 scsi_eh_4 
+196 scsi_tmf_4 
+198 scsi_eh_5 
+199 scsi_tmf_5 
+213 kdmflush 
+251 raid5wq 
+311 ext4-rsv-conver 
+344 hwrng 
+412 kaluad 
+413 ipmi-msghandler 
+414 kmpath_rdacd 
+416 kmpathd 
+417 kmpath_handlerd 
+508 ext4-rsv-conver 
+5481 kworker/0:0 
+7969 kworker/u2:1 
+9730 kworker/u2:2 
+10332 kworker/u2:0 
 ```
-$ cat /proc/PF_RANDOMIZE
-Monitoring process flags
-1 systemd 
-385 systemd-journal 
-413 systemd-udevd 
-575 multipathd 
-651 systemd-timesyn 
-660 systemd-network 
-662 systemd-resolve 
-673 accounts-daemon 
-674 avahi-daemon 
-675 dbus-daemon 
-676 NetworkManager 
-680 irqbalance 
-681 networkd-dispat 
-682 polkitd 
-684 rsyslogd 
-685 snapd 
-686 switcheroo-cont 
-688 systemd-logind 
-691 udisksd 
-701 wpa_supplicant 
-708 avahi-daemon 
-751 ModemManager 
-768 cron 
-774 atd 
-789 sshd 
-791 unattended-upgr 
-796 gdm3 
-804 gdm-session-wor 
-812 systemd 
-813 (sd-pam) 
-822 pulseaudio 
-824 rtkit-daemon 
-828 gdm-wayland-ses 
-830 dbus-daemon 
-832 dbus-run-sessio 
-833 dbus-daemon 
-834 gnome-session-b 
-859 gnome-shell 
-910 at-spi-bus-laun 
-915 dbus-daemon 
-924 Xwayland 
-1010 upowerd 
-```
-
 ## to stop
-```
+
 sudo rmmod mpf.ko 
 ```
 ## compatibility
