@@ -1,6 +1,6 @@
 # kpf
 Linux kernel module to monitor process flag
-## prerequisites
+## Prerequisites
 
 In general you need to install at least following packages (exact list depends on the specific GNU/Linux distribution used):
 
@@ -18,12 +18,11 @@ sudo dmesg
 
 
 
-## to compile
+## To compile
 ```
 make
 ```
-## to run
-To decode numeric process flags:
+## To decode a specific numeric process flag in log buffer
 ```
 sudo insmod dpf.ko pf=69238848
 sudo dmesg | tail -n 5
@@ -34,7 +33,9 @@ sudo dmesg | tail -n 5
 sudo rmmod dpf.ko
 ```
 
-To monitor a specific process flag in `/proc` you can use any valid symbolic process flag as parameter:
+## To monitor a specific process flag in `/proc` 
+
+Use any valid symbolic process flag as parameter:
 ```
 sudo insmod mpf.ko pf_parameter=PF_KTHREAD
 ```
@@ -120,7 +121,7 @@ Processes with PF_KTHREAD flag set are written to `/proc/PF_KTHREAD`:
 9730 kworker/u2:2 
 10332 kworker/u2:0 
 ```
-## to stop
+## To stop monitoring
 ```
 sudo rmmod mpf.ko 
 ```
