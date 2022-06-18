@@ -1,4 +1,4 @@
-# mpf
+# kpf
 Linux kernel module to monitor process flag
 ## prerequisites
 
