@@ -13,13 +13,28 @@ On CentOS 7.9 I also had to run:
 sudo ln -s /usr/src/kernels/3.10.0-1160.66.1.el7.x86_64/ /usr/src/kernels/3.10.0-1160.el7.x86_64
 
 ```
+sudo insmod dpf.ko pf=69238848
+sudo dmesg
+
+
 
 ## to compile
 ```
 make
 ```
 ## to run
-You can use any valid process flag as parameter:
+To decode numeric process flags:
+```
+sudo insmod dpf.ko pf=69238848
+sudo dmesg | tail -n 5
+[ 4870.564629] Starting dpf ... 
+[ 4870.564631] process flag count=25
+
+[ 4870.564633] 69238848 =  64 (PF_MCE_PROCESS) +  32768 (PF_FROZEN) +  2097152 (PF_KTHREAD) +  67108864 (PF_NO_SETAFFINITY)
+sudo rmmod dpf.ko
+```
+
+To monitor current process flags you can use any valid symbolic process flag as parameter:
 ```
 sudo insmod mpf.ko pf_parameter=PF_RANDOMIZE
 ```
