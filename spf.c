@@ -1,5 +1,5 @@
 /*
- * spc.c
+ * spf.c
  *
  * common data for kpf
  *
