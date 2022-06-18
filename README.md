@@ -33,7 +33,7 @@ sudo rmmod dpf.ko
 
 Use any valid symbolic process flag as parameter:
 ```
-sudo insmod mpf.ko pf_parameter=PF_KTHREAD
+sudo insmod mpf.ko pf=PF_KTHREAD
 ```
 Processes with PF_KTHREAD flag set are written to `/proc/PF_KTHREAD`:
 
