@@ -1,5 +1,5 @@
 /*
- * mpf.c
+ * monitorpf.c
  *
  * monitor process flag
  *
@@ -29,127 +29,14 @@ static char *pf_parameter = "";
 module_param(pf_parameter, charp, 0000);
 MODULE_PARM_DESC(pf_parameter, "process flag parameter");
 
+#include "spf.h"
+
 #define MAX_PF_NR	50
 
-static uint64_t fa[MAX_PF_NR] = {
-#ifdef	PF_IDLE
-	PF_IDLE,
-#endif
-	PF_EXITING,
-	PF_VCPU,
-	PF_WQ_WORKER,
-	PF_FORKNOEXEC,
-	PF_MCE_PROCESS,
-	PF_SUPERPRIV,
-	PF_DUMPCORE,
-	PF_SIGNALED,
-	PF_MEMALLOC,
-	PF_NPROC_EXCEEDED,
-	PF_USED_MATH,
-#ifdef	PF_USED_ASYNC
-	PF_USED_ASYNC,
-#endif
-	PF_NOFREEZE,
-	PF_FROZEN,
-	PF_KSWAPD,
-#ifdef	PF_MALLOC_NOFS
-	PF_MEMALLOC_NOFS,
-#endif
-	PF_MEMALLOC_NOIO,
-#ifdef PF_LESS_THROTTLE 
-	PF_LESS_THROTTLE,
-#endif
-#ifdef PF_LOCAL_THROTTLE 
-	PF_LOCAL_THROTTLE,
-#endif
-	PF_KTHREAD,
-	PF_RANDOMIZE,
-	PF_SWAPWRITE,
-#ifdef PF_MEMSTALL
-	PF_MEMSTALL,
-#endif
-#ifdef	PF_UMH
-	PF_UMH,
-#endif
-	PF_NO_SETAFFINITY,
-	PF_MCE_EARLY,
-#ifdef	PF_MEMALLOC_PIN
-	PF_MEMALLOC_PIN,
-#endif
-#ifdef	PF_MEMALLOC_NOCMA
-	PF_MEMALLOC_NOCMA,
-#endif
-#ifdef	PF_IO_WORKER
-	PF_IO_WORKER,
-#endif
-#ifdef	PF_MUTEX_TESTER
-	PF_MUTEX_TESTER,
-#endif
-	PF_FREEZER_SKIP,
-	PF_SUSPEND_TASK
+extern uint64_t fa[MAX_PF_NR];
+extern char *fda[MAX_PF_NR];
+extern uint8_t fa_count;
 
-};
-
-static char *fda[MAX_PF_NR] =
-{
-#ifdef	PF_IDLE_
-	"PF_IDLE",
-#endif	
-	"PF_EXITING",
-	"PF_VCPU",
-	"PF_WQ_WORKER",
-	"PF_FORKNOEXEC",
-	"PF_MCE_PROCESS",
-	"PF_SUPERPRIV",
-	"PF_DUMPCORE",
-	"PF_SIGNALED",
-	"PF_MEMALLOC",
-	"PF_NPROC_EXCEEDED",
-	"PF_USED_MATH",
-#ifdef	PF_USED_ASYNC
-	"PF_USED_ASYNC",
-#endif
-	"PF_NOFREEZE",
-	"PF_FROZEN",
-	"PF_KSWAPD",
-#ifdef	PF_MEMALLOC_NOFS
-	"PF_MEMALLOC_NOFS",
-#endif
-	"PF_MEMALLOC_NOIO",
-#ifdef	PF_LESS_THROTTLE
-	"PF_LESS_THROTTLE",
-#endif
-#ifdef	PF_LOCAL_THROTTLE
-	"PF_LOCAL_THROTTLE",
-#endif
-	"PF_KTHREAD",
-	"PF_RANDOMIZE",
-	"PF_SWAPWRITE",
-#ifdef	PF_MEMSTALL
-	"PF_MEMSTALL",
-#endif
-#ifdef	PF_UMH
-	"PF_UMH",
-#endif
-	"PF_NO_SETAFFINITY",
-	"PF_MCE_EARLY",
-#ifdef PF_MEMALLOC_PIN
-	"PF_MEMALLOC_PIN",
-#endif
-#ifdef PF_MEMALLOC_NOCMA
-	"PF_MEMALLOC_NOCMA",
-#endif
-#ifdef	PF_IO_WORKER
-	"PF_IO_WORKER",
-#endif
-#ifdef	PF_MUTEX_TESTER
-	"PF_MUTEX_TESTER",
-#endif
-	"PF_FREEZER_SKIP",
-	"PF_SUSPEND_TASK"
-};
-
-static uint8_t fa_count;
 static uint8_t pf_index;
 
 static void check_process(struct seq_file *s, int i);
