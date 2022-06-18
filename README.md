@@ -13,10 +13,6 @@ On CentOS 7.9 I also had to run:
 sudo ln -s /usr/src/kernels/3.10.0-1160.66.1.el7.x86_64/ /usr/src/kernels/3.10.0-1160.el7.x86_64
 
 ```
-sudo insmod dpf.ko pf=69238848
-sudo dmesg
-
-
 
 ## To compile
 ```
@@ -125,5 +121,5 @@ Processes with PF_KTHREAD flag set are written to `/proc/PF_KTHREAD`:
 ```
 sudo rmmod mpf.ko 
 ```
-## compatibility
+## Compatibility
 Currently this module is compatible with Linux kernel 3.10, 4.4, 4.15, 4.18, 5.4 and 5.15.
