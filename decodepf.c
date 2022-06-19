@@ -79,7 +79,7 @@ static int check_process_flag(uint64_t u)
 		       printk(KERN_CONT " + ");
 		     }
 		     else
-		       printk(KERN_INFO " %llu (%s)", fa[i], fda[i]);
+		       printk(KERN_CONT " %llu (%s) \n", fa[i], fda[i]);
 		 }
 	       }
 	}
