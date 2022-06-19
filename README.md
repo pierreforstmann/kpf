@@ -20,13 +20,12 @@ make
 ```
 ## To decode a specific numeric process flag in log buffer
 ```
-sudo insmod dpf.ko pf=69238848
-sudo dmesg | tail -n 5
-[ 4870.564629] Starting dpf ... 
-[ 4870.564631] process flag count=25
 
-[ 4870.564633] 69238848 =  64 (PF_MCE_PROCESS) +  32768 (PF_FROZEN) +  2097152 (PF_KTHREAD) +  67108864 (PF_NO_SETAFFINITY)
-sudo rmmod dpf.ko
+$ sudo insmod dpf.ko pf=7
+$ sudo dmesg | tail -n 2
+[12236.102782] dpf: starting ... 
+[12236.102785] dpf: 7 =  2 (PF_EXITING) +  4 (PF_VCPU) +  1 (PF_WQ_WORKER) 
+$ sudo rmmod dpf.ko
 ```
 
 ## To monitor a specific process flag in `/proc` 
