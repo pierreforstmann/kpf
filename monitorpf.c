@@ -27,7 +27,11 @@ MODULE_DESCRIPTION("monitor process flag in /proc");
  */
 static char *pf = "";
 module_param(pf, charp, 0400);
-MODULE_PARM_DESC(pf, "process flag parameter");
+MODULE_PARM_DESC(pf, "symbolic process flag");
+
+static int verbose = 0;
+module_param(verbose, int, 0400);
+MODULE_PARM_DESC(verbose, "verbose flag (1=true)");
 
 #include "spf.h"
 
@@ -44,7 +48,7 @@ static void check_process(struct seq_file *s, int i);
 static int mpf_proc_show(struct seq_file *s, void *v) 
 {
 
-  seq_printf(s, "Monitoring process flags\n");
+  seq_printf(s, "mpf: monitoring process flags\n");
   check_process(s, pf_index);
 
   return 0;
@@ -106,7 +110,8 @@ static void check_process(struct seq_file *sfile, int index)
     for_each_process (task) {
 	if (check_process_flag(task->flags, index) == 1)
 	{
-		printk(KERN_INFO "%d %s PF %d", task->pid, task->comm, index);
+		if (verbose == 1)
+		  printk(KERN_INFO "mpf: check_process: pid=%d comm=%s PF index=%d", task->pid, task->comm, index);
 		seq_printf(sfile,  "%d %s \n", task->pid, task->comm);
 	}
     }
@@ -120,10 +125,19 @@ static int module_init_proc(void)
   int found = 0;
   int index;
 
+
   for (i=0; i< MAX_PF_NR; i++)
 	if (fa[i] == 0)
 		break;
   fa_count = i - 1;
+
+  if (verbose == 1)
+  {
+	printk(KERN_INFO "mpf: dumping fda and fa arrays ...");
+	for (i=0; i < fa_count; i++)
+	 printk(KERN_INFO "mpf: entry=%d values=%s %llu", i, fda[i], fa[i]);
+	printk(KERN_INFO "mpf: ... done");
+  }
 
    for (i = 0 ; i < fa_count; i++)
 	if (strcmp(fda[i], pf) ==  0)
@@ -132,12 +146,13 @@ static int module_init_proc(void)
 		index = i;
 		break;
 	}
+
    if (found == 0)
    {
-        printk(KERN_INFO "process flag parameter %s not found \n", pf);
+        printk(KERN_INFO "mpf: process flag parameter %s not found \n", pf);
 	return 1;
    }
-   else	printk(KERN_INFO "process flag parameter %s found \n", pf);
+   else	printk(KERN_INFO "mpf: process flag parameter %s found \n", pf);
    
    pf_index = index;
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5,15,0)
@@ -147,7 +162,7 @@ static int module_init_proc(void)
 #endif
   if (new_proc == NULL)
   {
-	  printk(KERN_INFO "proc_create failed");
+	  printk(KERN_INFO "mpf: proc_create failed");
 	  return 1;
   }
 
@@ -156,7 +171,7 @@ static int module_init_proc(void)
 
 static int __init mpf_start(void)
 {
-    printk(KERN_INFO "Starting mpf ... \n");
+    printk(KERN_INFO "mpf: starting ...");
 
     if (module_init_proc() != 0)
 	    return -1;
@@ -167,7 +182,7 @@ static int __init mpf_start(void)
 static void __exit mpf_stop(void)
 {
   remove_proc_entry(pf, 0);
-  printk(KERN_INFO "... Stopping mpf \n");
+  printk(KERN_INFO "mpf: ... stopping \n");
 }
 
 module_init(mpf_start);
