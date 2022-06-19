@@ -143,3 +143,13 @@ char *fda[MAX_PF_NR] =
 
 uint8_t fa_count;
 
+void dump_arrays(char *module)
+{
+	int i;
+
+	printk(KERN_INFO "%s: dumping fda and fa arrays ...", module);
+	for (i=0; i < fa_count; i++)
+	 	printk(KERN_INFO "%s: entry=%d values=%s %llu", 
+				 module, i, fda[i], fa[i]);
+	printk(KERN_INFO "%s: ... done", module);
+}

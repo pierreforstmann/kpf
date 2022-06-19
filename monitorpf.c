@@ -40,6 +40,7 @@ MODULE_PARM_DESC(verbose, "verbose flag (1=true)");
 extern uint64_t fa[MAX_PF_NR];
 extern char *fda[MAX_PF_NR];
 extern uint8_t fa_count;
+extern void dump_arrays(char *module);
 
 static uint8_t pf_index;
 
@@ -132,12 +133,7 @@ static int module_init_proc(void)
   fa_count = i - 1;
 
   if (verbose == 1)
-  {
-	printk(KERN_INFO "mpf: dumping fda and fa arrays ...");
-	for (i=0; i < fa_count; i++)
-	 printk(KERN_INFO "mpf: entry=%d values=%s %llu", i, fda[i], fa[i]);
-	printk(KERN_INFO "mpf: ... done");
-  }
+	  dump_arrays("mpf");
 
    for (i = 0 ; i < fa_count; i++)
 	if (strcmp(fda[i], pf) ==  0)

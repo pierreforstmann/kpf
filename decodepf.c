@@ -31,9 +31,14 @@ static int pf  = 0;
 module_param(pf, int, 0644);
 MODULE_PARM_DESC(pf, "process flag ");
 
+static int verbose = 0;
+module_param(verbose, int, 0400);
+MODULE_PARM_DESC(verbose, "verbose flag (1=true)");
+
 extern uint64_t fa[MAX_PF_NR];
 extern char *fda[MAX_PF_NR];
 extern uint8_t fa_count;
+extern void dump_arrays(char *module);
 
 static int check_process_flag(uint64_t u)
 {
@@ -43,7 +48,6 @@ static int check_process_flag(uint64_t u)
 	uint64_t sum;
 	int	 found;
 
-	printk(KERN_INFO "\n");
 	sum = 0;
 	last_match_index = 0;
 	for (i = 0; i < MAX_PF_NR; i++)
@@ -63,6 +67,7 @@ static int check_process_flag(uint64_t u)
 	if (sum == u)
 	{
 		found = 1;
+		printk(KERN_INFO "dpf: ");
 		printk(KERN_CONT "%llu = ", u);
 		for (i = 0; i < fa_count; i++)
 		{
@@ -75,7 +80,7 @@ static int check_process_flag(uint64_t u)
 		}
 		printk(KERN_INFO "\n");
 	}
-	else 	printk(KERN_INFO "%llu is not a valid process flag \n", u);
+	else 	printk(KERN_INFO "dpf: %llu is not a valid process flag \n", u);
 
 	return found;
 }
@@ -90,7 +95,9 @@ static int module_run(void)
 	if (fa[i] == 0)
 		break;
   fa_count = i - 1;
-  printk(KERN_INFO "process flag count=%d", fa_count);
+
+  if (verbose == 1)
+	  dump_arrays("dpf");
 
   check_process_flag(pf); 
 
@@ -99,7 +106,7 @@ static int module_run(void)
 
 static int __init dpf_start(void)
 {
-    printk(KERN_INFO "Starting dpf ... \n");
+    printk(KERN_INFO "dpf: starting ... \n");
     
     if (module_run() != 0)
 	    return -1;
@@ -109,7 +116,7 @@ static int __init dpf_start(void)
 
 static void __exit dpf_stop(void)
 {
-  printk(KERN_INFO "... Stopping dpf \n");
+  printk(KERN_INFO "dpf: ... stopping \n");
 }
 
 module_init(dpf_start);
