@@ -73,38 +73,25 @@ static struct proc_ops  p_ops = {
 #endif
 
 
-static int check_process_flag(uint64_t u, uint8_t pf_index)
+static int check_process_flag(uint64_t u, uint8_t index)
 {
 	int i;
-	int last_match_index ;
 	uint64_t match[MAX_PF_NR];
-	uint64_t sum;
 	int	 found;
 
-	sum = 0;
-	last_match_index = 0;
+	found = 0;
 	for (i = 0; i < MAX_PF_NR; i++)
 		match[i] = 0;
 
 	for (i = 0; i < fa_count; i++)
+	{
 		if ((fa[i] & u) == fa[i])
 		{
 			match[i] = 1;
-			last_match_index = i;
 		}
-	found = 0;
-
-	for (i = 0; i < fa_count; i++)
-		if (match[i] == 1)
-			sum += fa[i];
-	if (sum == u)
-	{
-		for (i = 0; i < fa_count; i++)
+		if (index == i && match[i] == 1)
 		{
-			if (pf_index == i && match[i] == 1)
-			{
 				found = 1;
-			}
 		}
 	}
 
