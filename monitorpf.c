@@ -28,7 +28,9 @@ MODULE_DESCRIPTION("monitor process flag in /proc");
 static char *pf = "";
 module_param(pf, charp, 0400);
 MODULE_PARM_DESC(pf, "process flag parameter");
+/*
 #define pf_parameter pf
+*/
 
 #include "spf.h"
 
@@ -140,7 +142,7 @@ static int module_init_proc(void)
   fa_count = i - 1;
 
    for (i = 0 ; i < fa_count; i++)
-	if (strcmp(fda[i], pf_parameter) ==  0)
+	if (strcmp(fda[i], pf) ==  0)
 	{
 		found = 1;
 		index = i;
@@ -148,16 +150,16 @@ static int module_init_proc(void)
 	}
    if (found == 0)
    {
-        printk(KERN_INFO "process flag parameter %s not found \n", pf_parameter);
+        printk(KERN_INFO "process flag parameter %s not found \n", pf);
 	return 1;
    }
-   else	printk(KERN_INFO "process flag parameter %s found \n", pf_parameter);
+   else	printk(KERN_INFO "process flag parameter %s found \n", pf);
    
    pf_index = index;
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5,15,0)
-  new_proc = proc_create(pf_parameter, 0644, 0, &f_ops);
+  new_proc = proc_create(pf, 0644, 0, &f_ops);
 #else
-  new_proc = proc_create(pf_parameter, 0644, 0, &p_ops);
+  new_proc = proc_create(pf, 0644, 0, &p_ops);
 #endif
   if (new_proc == NULL)
   {
@@ -180,7 +182,7 @@ static int __init mpf_start(void)
 
 static void __exit mpf_stop(void)
 {
-  remove_proc_entry(pf_parameter, 0);
+  remove_proc_entry(pf, 0);
   printk(KERN_INFO "... Stopping mpf \n");
 }
 
