@@ -28,9 +28,6 @@ MODULE_DESCRIPTION("monitor process flag in /proc");
 static char *pf = "";
 module_param(pf, charp, 0400);
 MODULE_PARM_DESC(pf, "process flag parameter");
-/*
-#define pf_parameter pf
-*/
 
 #include "spf.h"
 
